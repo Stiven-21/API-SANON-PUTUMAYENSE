@@ -33,7 +33,9 @@ public class SaboresPostresController {
         if(validate != null) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.BAD_REQUEST, "Name already exists", null), HttpStatus.BAD_REQUEST);
 
         SaboresPostres saboresPostres = saboresPostresService.saveSaboresPostres(request);
-        return (saboresPostres != null) ? new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.OK, "Saved", saboresPostres), HttpStatus.OK) : new ResponseEntity<>(new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Error", null), HttpStatus.INTERNAL_SERVER_ERROR);
+        return (saboresPostres != null) ? 
+            new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.OK, "Saved", saboresPostres), HttpStatus.OK) 
+            : new ResponseEntity<>(new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Error", null), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,7 @@ public class SaboresPostresSecurity extends GlobalMappingConfig {
 
 
     @GetMapping("/sabores-postres/{id}")
+    @Secured("ADMIN")
     public ResponseEntity<Object> getSaboresPostresById(@PathVariable Integer id) {
         try {
             SaboresPostres response = saboresPostresController.getSaboresPostresById(id);
@@ -40,10 +42,8 @@ public class SaboresPostresSecurity extends GlobalMappingConfig {
     }
 
     @PostMapping("/sabores-postres")
+    @Secured("ADMIN")
     public ResponseEntity<ApiResponse> saveSaboresPostres(@RequestBody SaboresPostresRequest request) {
-        ResponseEntity<ApiResponse> response = saboresPostresController.saveSaboresPostres(request);
-        System.out.println("Response: " + response);
-        return response;
-
+        return saboresPostresController.saveSaboresPostres(request);
     }
 }

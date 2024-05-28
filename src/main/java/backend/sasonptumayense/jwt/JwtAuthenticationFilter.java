@@ -44,12 +44,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 					null,
 					userDetails.getAuthorities()
 				);
+				//System.out.println("Auth: " + authToken);
 				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
 				SecurityContextHolder.getContext().setAuthentication(authToken);
+			}else{
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				response.getWriter().write("Token JWT expirado");
+				return;
 			}
 		}
-		
+		//System.out.println("Role: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 		filterChain.doFilter(request, response);	
 	}
 

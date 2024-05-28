@@ -32,14 +32,21 @@ public class AuthController {
 	private final SelectedQuestionController selectedQuestionController;
 	
 	@PostMapping(value = "login")
-	public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
-		return ResponseEntity.ok(authService.login(request));
+	public ResponseEntity<ApiResponse> login(@RequestBody LoginRequest request) {
+		AuthResponse response = authService.login(request);
+		return 
+		(response == null) ? 
+			new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.NOT_FOUND, "User not found", null), HttpStatus.NOT_FOUND)
+			: new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.OK, "Logged in", response), HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "register")
 	public ResponseEntity<ApiResponse> register(@ModelAttribute RegisterRequest request, @RequestParam("photo") MultipartFile photo) {
-	//public ResponseEntity<String> register(@ModelAttribute RegisterRequest request, @RequestParam("photo") MultipartFile photo) {
 		DynamicResponseErrors obj = new DynamicResponseErrors();
+
+		if(request == null) {
+			obj.addError("request", "Request is required");
+		}
 		
 		String name = request.getName();
 		if(name == null || name.isEmpty()) {
@@ -115,10 +122,12 @@ public class AuthController {
 
 		if(obj.hasErrors()) {
 			return new ResponseEntity<ApiResponse>(
-				new ApiResponse(HttpStatus.BAD_REQUEST, "Validation error", obj.getErrors()), HttpStatus.BAD_REQUEST);
+				new ApiResponse(HttpStatus.BAD_REQUEST, "Validation error", obj.getErrors()), 
+				HttpStatus.BAD_REQUEST
+			);
+			
 		}else{
 			AuthResponse response = authService.register(request, photo);
-			System.out.println("Response: " + response);
 
 			selectedQuestionController.saveSelectedQuestion(new SelectedQuestionRequest(
 				response.getUser().getId(),
@@ -132,7 +141,10 @@ public class AuthController {
 				request.getSecondAnswer()
 			));
 
-			return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.OK, "Saved", response), HttpStatus.OK);
+			return new ResponseEntity<ApiResponse>(
+				new ApiResponse(HttpStatus.OK, "Saved", response),
+				HttpStatus.OK
+			);
 
 		}
 	}

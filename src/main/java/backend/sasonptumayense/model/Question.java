@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "questions", uniqueConstraints = @UniqueConstraint(columnNames = {"id", "question"}))
 public class Question {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "saborespostres_id_seq")
+    @SequenceGenerator(name = "saborespostres_id_seq", sequenceName = "saborespostres_id_seq", allocationSize = 1)
     private Integer id;
 
     @Column(nullable = false)

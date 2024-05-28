@@ -35,7 +35,8 @@ public class AuthService {
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 		UserDetails user = userRepository.findByUsername(request.getUsername()).orElseThrow();
 		User userData = (User) user;
-		String token = jwtService.getToken(user);
+		System.out.println("User: " + user);
+		String token = jwtService.getToken(user, userData.getRole().toString());
 		return createAuthResponse(userData, token);
 	}
 	
@@ -70,7 +71,7 @@ public class AuthService {
 				.build();
 				
 		User saveAccount = userRepository.save(user);
-		return createAuthResponse(saveAccount, jwtService.getToken(user));
+		return createAuthResponse(saveAccount, jwtService.getToken(user, saveAccount.getRole().toString()));
 		//return createAuthResponse(user, null);
 	}
 

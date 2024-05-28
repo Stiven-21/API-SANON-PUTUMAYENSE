@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,9 +20,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "categoriasElementos")
 public class CategoriasElementos {
 
-    @Id 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_sequence")
+	@SequenceGenerator(name = "my_sequence", sequenceName = "my_sequence_name", allocationSize = 1)
+	private Integer id;
 
     @Column(nullable = false)
     private String name;
