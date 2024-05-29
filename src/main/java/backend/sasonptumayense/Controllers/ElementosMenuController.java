@@ -43,12 +43,11 @@ public class ElementosMenuController {
 
         if(obj.hasErrors()) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.BAD_REQUEST, "An error has occurred", obj.getErrors()), HttpStatus.BAD_REQUEST);
 
-        if(elementosMenuService.getByName(request.getName()) != null) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.BAD_REQUEST, "Name already exists", null), HttpStatus.BAD_REQUEST);
+        if(elementosMenuService.getByName(request.getName().toLowerCase()) != null) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.BAD_REQUEST, "Name already exists", null), HttpStatus.BAD_REQUEST);
 
-        ResponseEntity<ApiResponse> response = fileController.uploadFile(photo, UUID.randomUUID().toString(), "elementos");
+        ResponseEntity<ApiResponse> response = fileController.uploadFile(photo, UUID.randomUUID().toString(), "elements");
 
         if(response.getStatusCode() != HttpStatus.OK) return response;
-        System.out.println("Path image: " + response.getBody().getData().toString());
 
         ElementosMenu elementosMenu = elementosMenuService.save(request, response.getBody().getData().toString());
 

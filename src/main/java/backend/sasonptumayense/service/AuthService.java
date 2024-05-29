@@ -1,11 +1,14 @@
 package backend.sasonptumayense.service;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import backend.sasonptumayense.Controllers.FileController;
 import backend.sasonptumayense.jwt.JwtService;
 import backend.sasonptumayense.model.Gender;
 import backend.sasonptumayense.model.IdentificationType;
@@ -14,6 +17,7 @@ import backend.sasonptumayense.permission.Roles;
 import backend.sasonptumayense.repository.UserRepository;
 import backend.sasonptumayense.request.LoginRequest;
 import backend.sasonptumayense.request.RegisterRequest;
+import backend.sasonptumayense.response.ApiResponse;
 import backend.sasonptumayense.response.AuthResponse;
 import backend.sasonptumayense.response.UserResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +33,7 @@ public class AuthService {
 	private final JwtService jwtService;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
+	private final FileController fileController;
 
 	public AuthResponse login(LoginRequest request) {
 		
@@ -43,18 +48,22 @@ public class AuthService {
 	public AuthResponse register(RegisterRequest request, MultipartFile photo) {
 		IdentificationType identificationType = identificationTypeService.getIdentificationTypeById(Integer.parseInt(request.getIdentificationTypeId()));
 		Gender gender = genderService.getGenderById(Integer.parseInt(request.getGenderId()));
-		String urlImage = "url de la imagen por defecto";
+		String urlImage = "users/user-default.jpg";
 
 		if(identificationType == null || gender == null) {
 			return null;
 		}
 
-		//guardar imagen
 		if(request.getPhoto() != null) {
-			urlImage = request.getPhoto().getOriginalFilename();
+			ResponseEntity<ApiResponse> responseUploadFile = fileController.uploadFile(request.getPhoto(), request.getIdentificationNumber(), "users");
+		
+			if(responseUploadFile.getStatusCode() != HttpStatus.OK) {
+				return null;
+			}
+
+			urlImage = responseUploadFile.getBody().getData().toString();
 		}
 
-		//configurar controlador para guardar imagen y llamarlo aqui
 
 		User user = User.builder()
 				.name(request.getName())

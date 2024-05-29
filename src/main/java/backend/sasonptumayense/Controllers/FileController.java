@@ -74,4 +74,8 @@ public class FileController {
             return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.BAD_REQUEST, e.getMessage(), null), HttpStatus.BAD_REQUEST);
         }
     }
+
+    public ResponseEntity<ApiResponse> updateFile(MultipartFile file, String name, String path) {
+        return uploadFile(file, name, path);
+    }
 }

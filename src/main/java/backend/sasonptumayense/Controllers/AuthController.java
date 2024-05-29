@@ -129,6 +129,13 @@ public class AuthController {
 		}else{
 			AuthResponse response = authService.register(request, photo);
 
+			if(response == null) {
+				return new ResponseEntity<ApiResponse>(
+					new ApiResponse(HttpStatus.BAD_REQUEST, "An error has occurred", null), 
+					HttpStatus.BAD_REQUEST
+				);
+			}
+
 			selectedQuestionController.saveSelectedQuestion(new SelectedQuestionRequest(
 				response.getUser().getId(),
 				Integer.parseInt(request.getFirstQuestion()),
