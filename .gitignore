@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### imagenes
+src/main/resources/images/*
