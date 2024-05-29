@@ -2,6 +2,7 @@ package backend.sasonptumayense.Controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.sasonptumayense.model.MenuElemento;
@@ -20,7 +21,25 @@ public class MenuElementoController {
     private final MenusService menusService;
     private final ElementosMenuService elementosMenuService;
 
-    public ResponseEntity<ApiResponse> getAllMenuElementos(){
+    public ResponseEntity<ApiResponse> getAllMenuElementos(@RequestParam(name = "menuId", required = false) String menuId, @RequestParam(name = "elementoId", required = false) String elementoId){
+        if((menuId != null && !menuId.isEmpty()) && (elementoId != null && !elementoId.isEmpty())){
+            return new ResponseEntity<ApiResponse>(
+                new ApiResponse(HttpStatus.OK, "OK", menuElementoService.findByMenusIdAndElementosMenuId(Integer.parseInt(menuId), Integer.parseInt(elementoId)))
+                , HttpStatus.OK);
+        }
+
+        if(menuId != null && !menuId.isEmpty()){
+            return new ResponseEntity<ApiResponse>(
+                new ApiResponse(HttpStatus.OK, "OK", menuElementoService.findByMenusId(Integer.parseInt(menuId)))
+                , HttpStatus.OK);
+        }
+
+        if(elementoId != null && !elementoId.isEmpty()){
+            return new ResponseEntity<ApiResponse>(
+                new ApiResponse(HttpStatus.OK, "OK", menuElementoService.findByElementosMenuId(Integer.parseInt(elementoId)))
+                , HttpStatus.OK);
+        }
+        
         return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.OK, "OK", menuElementoService.getAllMenuElementos()), HttpStatus.OK);
     }
 
@@ -36,6 +55,8 @@ public class MenuElementoController {
 
         if(menusService.getMenusById(Integer.parseInt(request.getMenuId())) == null) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.BAD_REQUEST, "Menu not found", null), HttpStatus.BAD_REQUEST);
         if(elementosMenuService.getById(Integer.parseInt(request.getElementoMenuId())) == null) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.BAD_REQUEST, "ElementosMenu not found", null), HttpStatus.BAD_REQUEST);
+
+        if(menuElementoService.findByMenusIdAndElementosMenuId(Integer.parseInt(request.getMenuId()), Integer.parseInt(request.getElementoMenuId())) != null) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.BAD_REQUEST, "MenuElemento with this menuId and elementoMenuId already exists", null), HttpStatus.BAD_REQUEST);
 
         MenuElemento menuElemento = menuElementoService.createMenuElemento(request);
         

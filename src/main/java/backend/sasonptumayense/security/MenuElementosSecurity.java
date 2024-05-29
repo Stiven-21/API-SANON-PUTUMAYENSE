@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.sasonptumayense.Controllers.MenuElementoController;
@@ -18,8 +19,8 @@ public class MenuElementosSecurity extends GlobalMappingConfig {
     private final MenuElementoController menuElementoController;
 
     @GetMapping("menu-elementos")
-    public ResponseEntity<ApiResponse> getMenuElementos() {
-        return menuElementoController.getAllMenuElementos();
+    public ResponseEntity<ApiResponse> getMenuElementos(@RequestParam(name = "menuId", required = false) String menuId, @RequestParam(name = "elementoId", required = false) String elementoId) {
+        return menuElementoController.getAllMenuElementos(menuId, elementoId);
     }
 
     @PostMapping("menu-elementos")

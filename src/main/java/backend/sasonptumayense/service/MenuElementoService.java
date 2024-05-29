@@ -35,4 +35,16 @@ public class MenuElementoService {
 
         return menuElementoRepository.save(menuElemento);
     }
+
+    public MenuElemento findByMenusIdAndElementosMenuId(Integer menusId, Integer elementosMenuId) {
+        return menuElementoRepository.findByMenusIdAndElementosMenuId(menusId, elementosMenuId).orElse(null);
+    }
+
+    public List<MenuElemento> findByMenusId(Integer menusId) {
+        return menuElementoRepository.findByMenusId(menusId).orElse(null);
+    }
+
+    public List<MenuElemento> findByElementosMenuId(Integer elementosMenuId) {
+        return menuElementoRepository.findByElementosMenuId(elementosMenuId).orElse(null);
+    }
 }

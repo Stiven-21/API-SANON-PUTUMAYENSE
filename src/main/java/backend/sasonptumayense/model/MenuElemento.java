@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "menuElemento")
 public class MenuElemento {
+    
     @Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "menu_elemento_sequence")
 	@SequenceGenerator(name = "menu_elemento_sequence", sequenceName = "menu_elemento_sequence_name", allocationSize = 1)
@@ -27,11 +28,11 @@ public class MenuElemento {
 
     //@Id
     @ManyToOne
-    @JoinColumn(name = "menusId", insertable = false, updatable = false)
+    @JoinColumn(name = "menusId", updatable = false, nullable = false)
     private Menus menus;
 
     //@Id
     @ManyToOne
-    @JoinColumn(name = "elementosMenuId", insertable = false, updatable = false)
+    @JoinColumn(name = "elementosMenuId", updatable = false, nullable = false)
     private ElementosMenu elementosMenu;
 }

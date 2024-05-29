@@ -33,4 +33,9 @@ build/
 .vscode/
 
 ### imagenes
-src/main/resources/images/*
+src/main/resources/images/elements/*
+src/main/resources/images/menus/*
+src/main/resources/images/users/*
+
+### la unica imagen que se sube a git
+!src/main/resources/images/users/user-default.jpg
