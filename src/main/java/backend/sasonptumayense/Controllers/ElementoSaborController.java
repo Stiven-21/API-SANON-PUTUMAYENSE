@@ -21,7 +21,10 @@ public class ElementoSaborController {
     private final ElementosMenuService elementosMenuService;
     private final SaboresPostresService saboresPostresService;
     
-    public ResponseEntity<ApiResponse> getAllElementoSabor(@RequestParam(name = "saborId", required = false) String saborId, @RequestParam(name = "elementoId", required = false) String elementoId){
+    public ResponseEntity<ApiResponse> getAllElementoSabor(
+        @RequestParam(name = "saborId", required = false) String saborId, 
+        @RequestParam(name = "elementoId", required = false) String elementoId){
+            
         if((saborId != null && !saborId.isEmpty()) && (elementoId != null && !elementoId.isEmpty())) {
             return new ResponseEntity<ApiResponse>(
                 new ApiResponse(HttpStatus.OK, "OK", elementoSaborService.findByElementoIdAndSaborId(Integer.parseInt(elementoId), Integer.parseInt(saborId)))
@@ -64,4 +67,6 @@ public class ElementoSaborController {
             new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.OK, "Saved", elementoSabor), HttpStatus.OK) 
             : new ResponseEntity<>(new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An error has occurred", null), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    
 }

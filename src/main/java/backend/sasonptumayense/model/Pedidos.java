@@ -28,8 +28,8 @@ import lombok.Setter;
 @Table(name = "pedidos", uniqueConstraints = @UniqueConstraint(columnNames = {"id"}))
 public class Pedidos {
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_sequence")
-	@SequenceGenerator(name = "my_sequence", sequenceName = "my_sequence_name", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pedidos")
+	@SequenceGenerator(name = "pedidos", sequenceName = "pedidos_name", allocationSize = 1)
 	private Integer id;
 
     @ManyToOne

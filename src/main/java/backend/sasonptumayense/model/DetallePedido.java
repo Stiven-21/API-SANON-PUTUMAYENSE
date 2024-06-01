@@ -23,21 +23,21 @@ import lombok.NoArgsConstructor;
 @Table(name = "detallePedidos", uniqueConstraints = @UniqueConstraint(columnNames = { "id" }))
 public class DetallePedido {
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_sequence")
-	@SequenceGenerator(name = "my_sequence", sequenceName = "my_sequence_name", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "detalle_pedido_secuense")
+	@SequenceGenerator(name = "detalle_pedido_secuense", sequenceName = "detalle_pedido_secuense_name", allocationSize = 1)
 	private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "pedidosId")
+    @JoinColumn(name = "pedidosId", nullable = false, updatable = false)
     private Pedidos pedidos;
 
     @ManyToOne
-    @JoinColumn(name = "MenuId")
+    @JoinColumn(name = "MenuId", nullable = false, updatable = false)
     private Menus menus;
 
     @Column(nullable = false)
     private Integer quantity;
 
     @Column(nullable = true)
-    private String opcionesPerzonalidas;
+    private String optionsPersonalizeds;
 }
