@@ -18,7 +18,6 @@ public class PedidosService {
     private final PedidosRepository pedidosRepository;
     private final EstadoPedidoService estadoPedidoService;
     private final UserService userService;
-    private final DetallePedidoService detallePedidoService;
 
     public List<Pedidos> getAllPedidos() {
         return pedidosRepository.findAll();
@@ -32,12 +31,8 @@ public class PedidosService {
         return pedidosRepository.findByUserId(id).orElse(null);
     }
 
-    public List<Pedidos> getPedidosByMenusId(Integer id) {
-        return pedidosRepository.findByMenusId(id).orElse(null);
-    }
-
-    public Pedidos getAllPedidosByMenuIdAndUserId(Integer menuId, Integer userId) {
-        return pedidosRepository.findByMenusIdAndUserId(menuId, userId).orElse(null);
+    public List<Pedidos> getAllEstadoPedidoIdAndUserId(Integer estadoPedidoId, Integer userId) {
+        return pedidosRepository.findByEstadoPedidoIdAndUserId(estadoPedidoId, userId).orElse(null);
     }
 
     public List<Pedidos> getAllPedidosByEstadoPedido(Integer estadoPedidoId) {
@@ -66,7 +61,6 @@ public class PedidosService {
     public Pedidos deletePedidos(Integer id) {
         Pedidos pedidos = pedidosRepository.findById(id).orElse(null);
         pedidosRepository.deleteById(id);
-        detallePedidoService.deletDetallePedidoByPedidoId(id);
         return pedidos;
     }
 }

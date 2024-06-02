@@ -30,19 +30,12 @@ public class PedidosController {
 
     public ResponseEntity<ApiResponse> getAllPedidos(
         @RequestParam(name = "userId", required = false) String userId, 
-        @RequestParam(name = "menusId", required = false) String menusId, 
         @RequestParam(name = "estadoId", required = false) String estadoId, 
         @RequestParam(name = "fecha", required = false) String fecha) {
 
-        if ((menusId != null  && !menusId.isEmpty()) && (userId != null && !userId.isEmpty())) {
+        if ((estadoId != null  && !estadoId.isEmpty()) && (userId != null && !userId.isEmpty())) {
             return new ResponseEntity<ApiResponse>(
-                new ApiResponse(HttpStatus.OK, "OK", pedidosService.getAllPedidosByMenuIdAndUserId(Integer.parseInt(menusId), Integer.parseInt(userId))), 
-                HttpStatus.OK);
-        }
-
-        if (menusId != null && !menusId.isEmpty()) {
-            return new ResponseEntity<ApiResponse>(
-                new ApiResponse(HttpStatus.OK, "OK", pedidosService.getPedidosByMenusId(Integer.parseInt(menusId))), 
+                new ApiResponse(HttpStatus.OK, "OK", pedidosService.getAllEstadoPedidoIdAndUserId(Integer.parseInt(estadoId), Integer.parseInt(userId))), 
                 HttpStatus.OK);
         }
 

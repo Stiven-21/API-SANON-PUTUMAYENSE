@@ -23,10 +23,9 @@ public class PedidosSecurity extends GlobalMappingConfig {
     @GetMapping("/pedidos")
     public ResponseEntity<ApiResponse> getAllPedidos(
         @RequestParam(name = "userId", required = false) String userId, 
-        @RequestParam(name = "menusId", required = false) String menusId, 
         @RequestParam(name = "estadoId", required = false) String estadoId, 
         @RequestParam(name = "fecha", required = false) String fecha) {
-        return pedidosController.getAllPedidos(userId, menusId, estadoId, fecha);
+        return pedidosController.getAllPedidos(userId, estadoId, fecha);
     }
 
     @PostMapping("/pedidos")
