@@ -18,6 +18,7 @@ public class UserResponse {
 	String identificationType;
 	String identificationNumber;
 	String email;
+	String rol;
 	String phone;
 	String gender;
 	String photo;

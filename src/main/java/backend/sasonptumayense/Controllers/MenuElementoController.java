@@ -2,6 +2,7 @@ package backend.sasonptumayense.Controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -63,6 +64,14 @@ public class MenuElementoController {
         return (menuElemento != null) ? 
             new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.OK, "Saved", menuElemento), HttpStatus.OK) 
             : new ResponseEntity<>(new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An error has occurred", null), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public ResponseEntity<ApiResponse> deleteById(@PathVariable Integer id){
+        MenuElemento menuElemento = menuElementoService.findById(id);
+
+        if(menuElemento == null) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.BAD_REQUEST, "MenuElemento not found", null), HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.OK, "Deleted", menuElementoService.deleteById(id)), HttpStatus.OK);
     }
 
 }

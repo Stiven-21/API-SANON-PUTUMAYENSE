@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-
+import backend.sasonptumayense.model.User;
 import backend.sasonptumayense.request.LoginRequest;
 import backend.sasonptumayense.request.RegisterRequest;
 import backend.sasonptumayense.request.SelectedQuestionRequest;
@@ -22,6 +23,7 @@ import backend.sasonptumayense.service.AuthService;
 import backend.sasonptumayense.service.UserService;
 import lombok.RequiredArgsConstructor;
 
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -30,12 +32,18 @@ public class AuthController {
 	private final AuthService authService;
 	private final UserService userService;
 	private final SelectedQuestionController selectedQuestionController;
+	private final PasswordEncoder passwordEncoder;
 	
 	@PostMapping(value = "login")
 	public ResponseEntity<ApiResponse> login(@RequestBody LoginRequest request) {
+		User val = userService.getUserByUsername(request.getUsername());
+		if(val == null) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.NOT_FOUND, "User not found", null), HttpStatus.NOT_FOUND);
+
+		if(!passwordEncoder.matches(request.getPassword(), val.getPassword())) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.NOT_FOUND, "incorrect password", null), HttpStatus.NOT_FOUND);
+
 		AuthResponse response = authService.login(request);
-		return 
-		(response == null) ? 
+		
+		return (response == null) ? 
 			new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.NOT_FOUND, "User not found", null), HttpStatus.NOT_FOUND)
 			: new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.OK, "Logged in", response), HttpStatus.OK);
 	}
@@ -43,6 +51,8 @@ public class AuthController {
 	@PostMapping(value = "register")
 	public ResponseEntity<ApiResponse> register(@ModelAttribute RegisterRequest request, @RequestParam("photo") MultipartFile photo) {
 		DynamicResponseErrors obj = new DynamicResponseErrors();
+
+		System.out.println("Request register: " + request);
 
 		if(request == null) {
 			obj.addError("request", "Request is required");

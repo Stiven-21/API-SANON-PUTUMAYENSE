@@ -36,7 +36,6 @@ public class AuthService {
 	private final FileController fileController;
 
 	public AuthResponse login(LoginRequest request) {
-		
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 		UserDetails user = userRepository.findByUsername(request.getUsername()).orElseThrow();
 		User userData = (User) user;
@@ -100,6 +99,7 @@ public class AuthService {
 				.identificationNumber(user.getIdentificationNumber())
 				.email(user.getEmail())
 				.phone(user.getPhone())
+				.rol(user.getRole().toString())
 				.gender(user.getGender().getNameGender())
 				.photo(user.getPhoto())
 				.build();

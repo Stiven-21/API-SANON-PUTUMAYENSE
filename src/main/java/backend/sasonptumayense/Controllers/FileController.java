@@ -1,6 +1,7 @@
 package backend.sasonptumayense.Controllers;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,10 +10,15 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpHeaders;
 
 import backend.sasonptumayense.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 public class FileController {
+
     public static boolean hasAllowedExtension(String fileName, Set<String> allowedExtensions) {
         for (String extension : allowedExtensions) {
             if(fileName.toLowerCase().endsWith(extension)) return true;
@@ -78,4 +85,28 @@ public class FileController {
     public ResponseEntity<ApiResponse> updateFile(MultipartFile file, String name, String path) {
         return uploadFile(file, name, path);
     }
+    
+    public ResponseEntity<Resource> getFile(@PathVariable String path, @PathVariable String fileName) {
+        try {
+            String folderPath = "src/main/resources/images/";
+            Path fullPath = Paths.get(folderPath, path, fileName).normalize();
+            Resource resource = new UrlResource(fullPath.toUri());
+    
+            if (!resource.exists() || !resource.isReadable()) {
+                return ResponseEntity.notFound().build();
+            }
+            String contentType = MediaType.IMAGE_JPEG_VALUE;
+            System.out.println(resource);
+    
+    
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + path + "/" + resource.getFilename() + "\"")
+                    .body(resource);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 }

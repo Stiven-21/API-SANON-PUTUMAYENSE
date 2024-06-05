@@ -47,4 +47,14 @@ public class MenuElementoService {
     public List<MenuElemento> findByElementosMenuId(Integer elementosMenuId) {
         return menuElementoRepository.findByElementosMenuId(elementosMenuId).orElse(null);
     }
+
+    public MenuElemento deleteById(Integer id) {
+        MenuElemento menuElemento = menuElementoRepository.findById(id).orElse(null);
+        menuElementoRepository.deleteById(id);
+        return menuElemento;
+    }
+
+    public MenuElemento findById(Integer id) {
+        return menuElementoRepository.findById(id).orElse(null);
+    }
 }

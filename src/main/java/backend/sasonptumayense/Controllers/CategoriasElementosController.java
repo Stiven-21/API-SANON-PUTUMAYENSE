@@ -30,7 +30,7 @@ public class CategoriasElementosController {
         if(request == null || request.getName() == null || request.getName().isEmpty()) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.BAD_REQUEST, "Name is required", null), HttpStatus.BAD_REQUEST);
 
         CategoriasElementos validate = categoriasElementosService.getFindByName(request.getName());
-        if(validate != null) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.CONFLICT, "CategoriasElementos already exists", null), HttpStatus.CONFLICT);
+        if(validate != null) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.CONFLICT, "'" + request.getName() + "' already exists", null), HttpStatus.CONFLICT);
 
         CategoriasElementos categoriasElementos = categoriasElementosService.saveCategoriasElementos(request);
         return (categoriasElementos != null) ? 
