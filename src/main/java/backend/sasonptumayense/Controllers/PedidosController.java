@@ -2,7 +2,7 @@ package backend.sasonptumayense.Controllers;
 
 import java.math.BigDecimal;
 import java.util.Date;
-
+import java.util.List;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.ZoneId;
@@ -12,10 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import backend.sasonptumayense.model.DetallePedido;
 import backend.sasonptumayense.model.Pedidos;
 import backend.sasonptumayense.request.PedidosRequest;
 import backend.sasonptumayense.response.ApiResponse;
 import backend.sasonptumayense.response.DynamicResponseErrors;
+import backend.sasonptumayense.service.DetallePedidoService;
 import backend.sasonptumayense.service.EstadoPedidoService;
 import backend.sasonptumayense.service.PedidosService;
 import backend.sasonptumayense.service.UserService;
@@ -27,6 +29,7 @@ public class PedidosController {
     private final PedidosService pedidosService;
     private final EstadoPedidoService estadoPedidoService;
     private final UserService userService;
+    private final DetallePedidoService detallePedidoService;
 
     public ResponseEntity<ApiResponse> getAllPedidos(
         @RequestParam(name = "userId", required = false) String userId, 
@@ -100,6 +103,11 @@ public class PedidosController {
     }
 
     public ResponseEntity<ApiResponse> deletePedidos(Integer id) {
+        List<DetallePedido> detallePedido = detallePedidoService.findByMenusId(id);
+
+        if(detallePedido.size() > 0) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.CONFLICT, "You cannot delete the menu because there are orders placed", null), HttpStatus.CONFLICT);  
+
+
         Pedidos pedidos = pedidosService.getPedidosById(id);
         return (pedidos != null) ?
                 new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.OK, "Deleted", pedidosService.deletePedidos(id)), HttpStatus.OK)

@@ -1,5 +1,6 @@
 package backend.sasonptumayense.Controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -10,10 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import backend.sasonptumayense.model.ElementosMenu;
+import backend.sasonptumayense.model.MenuElemento;
 import backend.sasonptumayense.request.ElementosMenuRequest;
 import backend.sasonptumayense.response.ApiResponse;
 import backend.sasonptumayense.response.DynamicResponseErrors;
 import backend.sasonptumayense.service.ElementosMenuService;
+import backend.sasonptumayense.service.MenuElementoService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -21,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class ElementosMenuController {
     private final ElementosMenuService elementosMenuService;
     private final FileController fileController;
+    private final MenuElementoService menuElementoService;
 
     public ResponseEntity<ApiResponse> getAllElementosMenu() {
         return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.OK, "OK", elementosMenuService.getAll()), HttpStatus.OK);
@@ -61,7 +65,12 @@ public class ElementosMenuController {
     }
 
     public ResponseEntity<ApiResponse> deleteElementosMenu(Integer id) {
+        List<MenuElemento> menuElemento = menuElementoService.findByElementosMenuId(id);
+
+        if(menuElemento.size() > 0) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.CONFLICT, "You cannot delete the item because it is being used in one or more menus", null), HttpStatus.CONFLICT);
         ElementosMenu elementosMenu = elementosMenuService.getById(id);
+
+
         if(elementosMenu != null) {
             fileController.deleteFile(elementosMenu.getPhotoElemento());
             return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.OK, "Deleted", elementosMenuService.deleteElementosMenu(id)), HttpStatus.OK);

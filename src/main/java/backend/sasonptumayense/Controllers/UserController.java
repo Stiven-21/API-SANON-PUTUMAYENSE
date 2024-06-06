@@ -37,4 +37,12 @@ public class UserController {
         return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.OK, "OK", userService.getAllUsers()), HttpStatus.OK);
     }
 
+    public ResponseEntity<ApiResponse> getUserWithUsername(@RequestParam(name = "username", required = true) String username) {
+        User user = userService.getUserByUsername(username);
+
+        return (user == null) ?
+            new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.NOT_FOUND, "User not found", null), HttpStatus.NOT_FOUND) :
+            new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.OK, "OK", user), HttpStatus.OK);
+    }
+
 }
