@@ -1,19 +1,24 @@
 package backend.sasonptumayense.Controllers;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.sasonptumayense.model.CategoriasElementos;
+import backend.sasonptumayense.model.ElementosMenu;
 import backend.sasonptumayense.request.CategoriaElementosRequest;
 import backend.sasonptumayense.response.ApiResponse;
 import backend.sasonptumayense.service.CategoriasElementosService;
+import backend.sasonptumayense.service.ElementosMenuService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 public class CategoriasElementosController {
     private final CategoriasElementosService categoriasElementosService;
+    private final ElementosMenuService elementosMenuService;
 
     public ResponseEntity<ApiResponse> getAllCategoriasElementos() {
         return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.OK, "OK", categoriasElementosService.getAllCategoriasElementos()), HttpStatus.OK);
@@ -39,6 +44,9 @@ public class CategoriasElementosController {
     }
 
     public ResponseEntity<ApiResponse> deleteCategoriasElementos(Integer id) {
+        List<ElementosMenu> validate = elementosMenuService.getElementosMenuByCategoriasElementosId(id);
+        if(!validate.isEmpty()) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.BAD_REQUEST, "CategoriasElementos has elements", null), HttpStatus.BAD_REQUEST);
+        
         CategoriasElementos categoriasElementos = categoriasElementosService.getCategoriasElementosById(id);
         return (categoriasElementos != null) ? 
             new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.OK, "Deleted", categoriasElementosService.deleteCategoriasElementos(id)), HttpStatus.OK) 

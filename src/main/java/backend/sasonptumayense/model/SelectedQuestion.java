@@ -23,8 +23,8 @@ import lombok.NoArgsConstructor;
 public class SelectedQuestion {
 
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_sequence")
-	@SequenceGenerator(name = "my_sequence", sequenceName = "my_sequence_name", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "selected_question_sequense")
+	@SequenceGenerator(name = "selected_question_sequense", sequenceName = "selected_question_sequense_name", allocationSize = 1)
 	private Integer id;
 
     @ManyToOne

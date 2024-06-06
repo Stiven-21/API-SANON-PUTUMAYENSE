@@ -20,8 +20,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "genders")
 public class Gender {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_sequence")
-	@SequenceGenerator(name = "my_sequence", sequenceName = "my_sequence_name", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gender_sequence")
+	@SequenceGenerator(name = "gender_sequence", sequenceName = "gender_sequence_name", allocationSize = 1)
 	private Integer id;
 	
 	@Column(nullable = false)

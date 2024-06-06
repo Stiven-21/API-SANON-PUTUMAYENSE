@@ -21,8 +21,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "identificationsType")
 public class IdentificationType {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_sequence")
-	@SequenceGenerator(name = "my_sequence", sequenceName = "my_sequence_name", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idType_sequence")
+	@SequenceGenerator(name = "idType_sequence", sequenceName = "idType_sequence_name", allocationSize = 1)
 	private Integer id;
 
 	@Basic

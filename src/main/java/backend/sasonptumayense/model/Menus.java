@@ -20,8 +20,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "menus")
 public class Menus {
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_sequence")
-	@SequenceGenerator(name = "my_sequence", sequenceName = "my_sequence_name", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "menus_sequence")
+	@SequenceGenerator(name = "menus_sequence", sequenceName = "menus_sequence_name", allocationSize = 1)
 	private Integer id;
 
     @Column(nullable = false)

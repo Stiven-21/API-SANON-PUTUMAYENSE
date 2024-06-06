@@ -1,5 +1,7 @@
 package backend.sasonptumayense.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import backend.sasonptumayense.model.User;
@@ -10,6 +12,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
 
     public User getUserById(Integer id) {
         User user = userRepository.findById(id).orElse(null);

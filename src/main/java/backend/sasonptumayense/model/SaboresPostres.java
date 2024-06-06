@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class SaboresPostres {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "saborespostres_id_seq")
-    @SequenceGenerator(name = "saborespostres_id_seq", sequenceName = "saborespostres_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "saborespostres_id_seq", sequenceName = "saborespostres_id_seq_name", allocationSize = 1)
     private Integer id;
 
     @Column(nullable = false, unique = true)

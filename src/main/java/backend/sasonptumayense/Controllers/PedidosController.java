@@ -73,6 +73,7 @@ public class PedidosController {
     }
 
     public ResponseEntity<ApiResponse> createPedidos(PedidosRequest request) {
+        System.out.println(request);
         DynamicResponseErrors obj = new DynamicResponseErrors();
 
         if (request == null) obj.addError("request", "Request is required");
@@ -83,7 +84,7 @@ public class PedidosController {
 
         if (request.getTotal() == null) obj.addError("total", "total is required");
 
-        if (request.getTotal().compareTo(BigDecimal.ZERO) <= 0) obj.addError("total", "total must be greater than 0");
+        if (request.getTotal() == null ||request.getTotal().compareTo(BigDecimal.ZERO) <= 0) obj.addError("total", "total must be greater than 0");
 
         if (obj.hasErrors()) return new ResponseEntity<ApiResponse>(new ApiResponse(HttpStatus.BAD_REQUEST, "An error has occurred", obj.getErrors()), HttpStatus.BAD_REQUEST);
 

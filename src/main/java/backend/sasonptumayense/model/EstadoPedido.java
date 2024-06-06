@@ -21,8 +21,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "estadoPedido", uniqueConstraints = @UniqueConstraint(columnNames = "id"))
 public class EstadoPedido {
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_sequence")
-	@SequenceGenerator(name = "my_sequence", sequenceName = "my_sequence_name", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "estadopedido_secuense")
+	@SequenceGenerator(name = "estadopedido_secuense", sequenceName = "estadopedido_secuense_name", allocationSize = 1)
 	private Integer id;
 
     @Column(nullable = false)

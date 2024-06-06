@@ -44,6 +44,10 @@ public class ElementosMenuService {
 
     }
 
+    public List<ElementosMenu> getElementosMenuByCategoriasElementosId(Integer categoriasElementosId) {
+        return elementosMenuRepository.findByCategoriasElementosId(categoriasElementosId).orElse(null);
+    }
+
     public ElementosMenu deleteElementosMenu(Integer id) {
         ElementosMenu elementosMenu = elementosMenuRepository.findById(id).orElse(null);
         elementosMenuRepository.deleteById(id);
